@@ -35,7 +35,6 @@ public class TestDistributed  {
     JMeterUtils.loadJMeterProperties("src/test/resources/jmeter/bin/jmeter.properties");
     JMeterUtils.setJMeterHome("src/test/resources/jmeter");
     JMeterUtils.initLogging();
-    
   }
 	
 	@Test
@@ -60,7 +59,7 @@ public class TestDistributed  {
     // Thread Group
     ThreadGroup threadGroup = new ThreadGroup();
     threadGroup.setName("Example Thread Group");
-    threadGroup.setNumThreads(1000);
+    threadGroup.setNumThreads(100);
     threadGroup.setRampUp(5);
     threadGroup.setSamplerController(loopController);
     threadGroup.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
@@ -104,7 +103,6 @@ public class TestDistributed  {
     ra.setProperty(TestElement.TEST_CLASS, ResponseAssertion.class.getName());
     ra.setProperty(TestElement.GUI_CLASS, AssertionGui.class.getName());
 
-
     ra.setName("Response Assertion");
     ra.setEnabled(true);
     ra.setTestFieldResponseData();
@@ -113,9 +111,7 @@ public class TestDistributed  {
     ra.setAssumeSuccess(false);       
     threadGroupHashTree.add(ra);
 
-
     //add ResultCollector
-
     Summariser summer = null;
     String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");//$NON-NLS-1$
     if (summariserName.length() > 0) {
@@ -157,7 +153,9 @@ public class TestDistributed  {
 		 hosts.add("192.168.1.4");
 
 		 distributedRunner.init(hosts, hashTree);
-		 distributedRunner.start(hosts);
+		 distributedRunner.start();
+		 
+		 Thread.currentThread().join();
 	}
 
 }
