@@ -6,7 +6,6 @@ import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -72,7 +71,7 @@ public class TestDistributed  {
     // Thread Group
     ThreadGroup threadGroup = new ThreadGroup();
     threadGroup.setName("Example Thread Group");
-    threadGroup.setNumThreads(20);
+    threadGroup.setNumThreads(100);
     threadGroup.setRampUp(5);
     threadGroup.setSamplerController(loopController);
     threadGroup.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
@@ -95,6 +94,11 @@ public class TestDistributed  {
     httpSampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
     httpSampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
     httpSampler.setEnabled(true);
+    httpSampler.setConnectTimeout("30000");
+    httpSampler.setResponseTimeout("30000");
+    httpSampler.setAutoRedirects(false);
+    httpSampler.setMonitor(false);
+    httpSampler.setDoMultipartPost(false);
     httpSampler.setCookieManager(cookie);        
     httpSampler.setName("Login codeproject post");
     httpSampler.setDomain("www.codeproject.com");
@@ -163,7 +167,7 @@ public class TestDistributed  {
     distributedRunner.setStdErr(System.err);
 
     List<String> hosts = new ArrayList<String>();
-    hosts.add("192.168.1.4");
+    hosts.add("172.27.4.81");
 
     distributedRunner.init(hosts, hashTree);
     distributedRunner.start();
